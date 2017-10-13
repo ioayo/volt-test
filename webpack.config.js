@@ -18,7 +18,7 @@ module.exports = {
   },
   output: {
     path: path.join(__dirname, '/public/'),
-    filename: '[name].js',
+    filename: 'bundle.js',
     publicPath: '/'
   },
   plugins: [
@@ -38,7 +38,7 @@ module.exports = {
     loaders: [{
       test: /\.jsx?$/,
       exclude: /node_modules/,
-      loader: 'babel',
+      loader: 'babel-loader',
       query: {
         presets: ['react', 'stage-0', 'es2015']
       }
