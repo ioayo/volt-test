@@ -3,4 +3,16 @@ import { render } from 'react-dom';
 
 import 'react-select/dist/react-select.css';
 
-render(<div>Place asd фывыфв sadasd</div>, document.getElementById('app-root'));
+class App extends React.Component {
+	componentDidMount() {
+		fetch('/api/customers')
+			.then(response => response.json())
+			.then(responseData => console.log(responseData))
+	}
+	render() {
+		return (
+			<div>kek</div>	
+		)
+	}
+}
+render(<App />, document.getElementById('app-root'));

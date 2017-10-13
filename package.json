@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "webpack-dev-server"
   },
   "dependencies": {
     "babel-runtime": "^6.3.19",
@@ -31,6 +32,7 @@
     "style-loader": "^0.13.1",
     "webpack": "^1.13.0",
     "webpack-dev-middleware": "^1.2.0",
+    "webpack-dev-server": "^1.14.1",
     "webpack-hot-middleware": "^2.2.0"
   }
 }
