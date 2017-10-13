@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-
+import './main.css';
 import 'react-select/dist/react-select.css';
 
 class App extends React.Component {

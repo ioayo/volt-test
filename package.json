@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node server.js",
-    "dev": "webpack-dev-server --hot --inline --progress"
+    "dev": "webpack-dev-server --progress"
   },
   "dependencies": {
     "babel-runtime": "^6.3.19",

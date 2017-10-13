@@ -7,7 +7,9 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   devtool: 'eval-source-map',
   entry: [
-    // 'webpack-hot-middleware/client?reload=true',
+    // 'webpack-hot-kmiddleware/client?reload=true',
+    'webpack-dev-server/client?http://localhost:8080',
+    'webpack/hot/dev-server',
     path.join(__dirname, 'src/app.jsx')
   ],
   resolve: {
@@ -48,6 +50,8 @@ module.exports = {
     }]
   },
   devServer: {
+    hot: true,
+    contentBase: './public/',
     proxy: {
       "*": "http://localhost:8000"
     }
