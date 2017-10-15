@@ -15,11 +15,8 @@ class Customers extends React.Component {
 			customerPhone: '',
 
 
-			validate: {
-				name: null,
-				address: null,
-				phone: null
-			}
+			validateName: null,
+
 		}
 		this.showModalCreate = this.showModalCreate.bind(this);
 		this.closeCreateModal = this.closeCreateModal.bind(this);
@@ -60,7 +57,34 @@ class Customers extends React.Component {
 		newState[name] = e.target.value;
 		this.setState(newState);
 	}
-	
+
+	//validate forms
+	validate(data, callback) {
+		const errors = {};
+    if (!data.name || data.name.trim().length  === 0) {
+    	errors.name = 'error';
+    	this.setState({ validateName: 'error' })
+    } else {
+    	this.setState({ validateName: null })
+    }
+
+    if (!data.address || data.address.trim().length === 0) {
+    	errors.address = 'error';
+    	this.setState({ validateAddress: 'error' })
+    } else {
+    	this.setState({ validateAddress: null })
+    }
+
+    if (!data.phone || data.phone.trim().length === 0) {
+    	errors.phone = 'error';
+    	this.setState({ validatePhone: 'error' })
+    } else {
+    	this.setState({ validatePhone: null })
+    }
+
+    callback(errors);
+  }
+
 	//create customer from modal
 	createCustomer() {
 		const customerName = this.state.customerName,
@@ -74,33 +98,46 @@ class Customers extends React.Component {
 						'name' : customerName,
 						'address': customerAddress,
 						'phone': customerPhone
-					},
-					customers = this.state.customers;
-		//add new customer to customers
-		customers.splice(customers.length, 0, newCustomer);
-		this.setState({ 
-				customers: customers,
-				showModalCreate: false
-			});
-	
-		fetch('/api/customers/', {
-		  method: 'POST',
-		  headers: {
-		    'Accept': 'application/json',
-		    'Content-Type': 'application/json',
-		  },
-		  body: JSON.stringify({
-		  	'id': customerId,
-				'name' : customerName,
-				'address': customerAddress,
-				'phone': customerPhone
-		  })
-		})
+					};
+					
+
+		//validate data and if validate succesful - post new customer to database
+		//
+		this.validate(newCustomer, (validateErrors) => {
+			console.log(validateErrors)
+			//check no errors here
+			if (Object.keys(validateErrors).length === 0) {
+				//add new customer to state
+				let customers = this.state.customers;
+				customers.splice(customers.length, 0, newCustomer);
+
+				this.setState({ 
+						customers: customers,
+						showModalCreate: false 
+					});
+				// POST newCustomer to database
+				fetch('/api/customers/', {
+				  method: 'POST',
+				  headers: {
+				    'Accept': 'application/json',
+				    'Content-Type': 'application/json',
+				  },
+				  body: JSON.stringify({
+				  	'id': customerId,
+						'name' : customerName,
+						'address': customerAddress,
+						'phone': customerPhone
+				  })
+				})
+			} 
+		});
+		
 	}
 
-	render() {
+	
 
-		console.dir(this.state.customers);
+
+	render() {
 
 		let customersList = this.state.customers.map((customer) => (
 				<tr key={customer.id}>
@@ -139,7 +176,7 @@ class Customers extends React.Component {
             <Modal.Title>Create New Customer</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-          <FormGroup validationState={this.state.validate.name}>
+          <FormGroup validationState={this.state.validateName}>
           	<ControlLabel>Name</ControlLabel>
           	<FormControl 
 							type="text"
@@ -149,7 +186,7 @@ class Customers extends React.Component {
 							placeholder="Enter name"
           	/>
           </FormGroup>
-          <FormGroup validationState={this.state.validate.address}>
+          <FormGroup validationState={this.state.validateAddress}>
           	<ControlLabel>Address</ControlLabel>
           	<FormControl 
 							type="text"
@@ -158,8 +195,8 @@ class Customers extends React.Component {
 							onChange={this.handleInput}
 							placeholder="Enter name"
           	/>
-          </FormGroup>
-          <FormGroup validationState={this.state.validate.phone}>
+          </FormGroup >
+          <FormGroup validationState={this.state.validatePhone}>
           	<ControlLabel>Phone</ControlLabel>
           	<FormControl 
 							type="text"
