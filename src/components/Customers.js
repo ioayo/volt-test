@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, PageHeader, Button, Table, Modal, FormGroup, FormControl, ControlLabel} from 'react-bootstrap';
+import ModalForm from './Modals/ModalForm';
 
 class Customers extends React.Component {
 	//initialising
@@ -9,13 +10,19 @@ class Customers extends React.Component {
 			customers: [],
 			showModalCreate: false,
 
-			customerId: '',
-			customerName: '',
-			customerAddress: '',
-			customerPhone: '',
+			customer: {
+				id: '',
+				phone: '',
+				name: '',
+				address: ''
+			},
 
 
-			validateName: null,
+			validate: {
+				name: null,
+				phone: null,
+				address: null
+			}
 
 		}
 		this.showModalCreate = this.showModalCreate.bind(this);
@@ -43,10 +50,12 @@ class Customers extends React.Component {
 	showModalCreate() {
 		this.setState({
 			showModalCreate: true,
-			customerId: '',
-			customerName: '',
-			customerAddress: '',
-			customerPhone: '',
+			customer: {
+				id: '',
+				name: '',
+				address: '',
+				phone: ''
+			}
 		})
 	}
 	
@@ -61,10 +70,12 @@ class Customers extends React.Component {
 
 			this.setState({
 				showModalEdit: true,
-				customerId: customer[0].id,
-				customerName: customer[0].name,
-				customerAddress: customer[0].address,
-				customerPhone: customer[0].phone,
+				customer: {
+					id: customer[0].id,
+					name: customer[0].name,
+					address: customer[0].address,
+					phone: customer[0].phone
+				}
 			})
 		}
 	}
@@ -94,9 +105,10 @@ class Customers extends React.Component {
 	handleInput(e) {
 		let name = e.target.name, 
 				value = e.target.value,
-				newState = this.state;
+				newState = this.state.customer;
 		newState[name] = e.target.value;
-		this.setState(newState);
+		this.setState({...newState});
+		console.log(newState[name]);
 	}
 
 	//validate forms
@@ -128,9 +140,9 @@ class Customers extends React.Component {
 
 	//create customer from modal
 	createCustomer() {
-		const customerName = this.state.customerName,
-					customerAddress = this.state.customerAddress,
-					customerPhone = this.state.customerPhone,
+		const customerName = this.state.customer.name,
+					customerAddress = this.state.customer.address,
+					customerPhone = this.state.customer.phone,
 					customerId = this.state.customers.reduce(function(prev, current) {
     				return (prev.id > current.id) ? prev : current
 					}).id + 1,
@@ -160,18 +172,17 @@ class Customers extends React.Component {
 				  },
 				  body: JSON.stringify(newCustomer)
 				})
-				this.getCustomers();
+					.then(() => this.getCustomers());
 			} 
 		});
 	}
 
 
 	editCustomer() {
-
-		const customerName = this.state.customerName,
-					customerAddress = this.state.customerAddress,
-					customerPhone = this.state.customerPhone,
-					customerId = this.state.customerId;
+		const customerName = this.state.customer.name,
+					customerAddress = this.state.customer.address,
+					customerPhone = this.state.customer.phone,
+					customerId = this.state.customer.id;
 
 		let data = {
 			'id': customerId,
@@ -183,7 +194,6 @@ class Customers extends React.Component {
 		this.validate(data, (validateErrors) => {
 			if (!validateErrors) {
 				this.setState({ showModalEdit: false });
-				console.log(JSON.stringify(data));
 				fetch(`/api/customers/${data.id}`, {
 			    method: 'PUT',
 			    headers: {
@@ -191,11 +201,10 @@ class Customers extends React.Component {
 			      'Content-Type': 'application/json'
 			    },
 			    body: JSON.stringify(data),
-		  	});
-		  	
+		  	}).
+		  	then(() =>this.getCustomers());
 			}		
 		});
-		this.getCustomers();
 	}
 
 	
@@ -234,47 +243,14 @@ class Customers extends React.Component {
 					</Table>
 				</Grid>
 
-				<Modal show={this.state.showModalCreate} onHide={this.closeCreateModal}>
-					<Modal.Header closeButton>
-            <Modal.Title>Create New Customer</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-          <FormGroup validationState={this.state.validateName}>
-          	<ControlLabel>Name</ControlLabel>
-          	<FormControl 
-							type="text"
-							name="customerName"
-							value={this.state.customerName}
-							onChange={this.handleInput}
-							placeholder="Enter name"
-          	/>
-          </FormGroup>
-          <FormGroup validationState={this.state.validateAddress}>
-          	<ControlLabel>Address</ControlLabel>
-          	<FormControl 
-							type="text"
-							name="customerAddress"
-							value={this.state.customerAddress}
-							onChange={this.handleInput}
-							placeholder="Enter name"
-          	/>
-          </FormGroup >
-          <FormGroup validationState={this.state.validatePhone}>
-          	<ControlLabel>Phone</ControlLabel>
-          	<FormControl 
-							type="text"
-							name="customerPhone"
-							value={this.state.customerPhone}
-							onChange={this.handleInput}
-							placeholder="Enter name"
-          	/>
-          </FormGroup>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button bsStyle="primary" onClick={this.createCustomer}>Create</Button>
-            <Button onClick={this.closeCreateModal}>Cancel</Button>
-          </Modal.Footer>
-				</Modal>
+				<ModalForm showModal={this.state.showModalCreate} 
+							 hideModal={this.closeCreateModal} 
+							 validate={this.state.validate}
+							 customer = {this.state.customer}
+							 handleInput={this.handleInput}
+							 createCustomer={this.createCustomer}
+							 onClick={this.closeCreateModal}
+					/>
 
 
 				<Modal show={this.state.showModalEdit} onHide={this.closeEditModal}>
