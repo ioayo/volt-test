@@ -5,11 +5,10 @@ import { Button, Table, Modal, FormGroup, FormControl, ControlLabel} from 'react
 class ModalForm extends React.Component {
   render() {
 
-    console.log(this.props)
     return (
-      <Modal show={this.props.showModal} onHide={this.props.hideModal}>
+      <Modal show={this.props.showModal} onHide={this.props.onClose}>
           <Modal.Header closeButton>
-            <Modal.Title>Create New Customer</Modal.Title>
+            <Modal.Title>{this.props.title}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
           <FormGroup validationState={this.props.validate.name}>
@@ -44,8 +43,8 @@ class ModalForm extends React.Component {
           </FormGroup>
           </Modal.Body>
           <Modal.Footer>
-            <Button bsStyle="primary" onClick={this.props.createCustomer}>Create</Button>
-            <Button onClick={this.props.hideModal}>Cancel</Button>
+            <Button bsStyle="primary" onClick={this.props.onSubmit}>{this.props.modalType}</Button>
+            <Button onClick={this.props.onClose}>Cancel</Button>
           </Modal.Footer>
         </Modal>
     )
