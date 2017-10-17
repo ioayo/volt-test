@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, PageHeader, Button, Table, Modal, FormGroup, FormControl, ControlLabel} from 'react-bootstrap';
 import ModalForm from './Modals/ModalForm';
+import Client from './Helpers';
 
 class Customers extends React.Component {
 	//initialising
@@ -41,9 +42,9 @@ class Customers extends React.Component {
 	}
 
 	getCustomers() {
-		fetch('/api/customers')
-			.then(response => response.json())
-			.then(responseData => this.setState({ customers: responseData }))
+		Client.getData('customers', (responseData) => {
+			this.setState({ customers: responseData })
+		});
 	}
 
 	//handle click on create button
@@ -202,7 +203,7 @@ class Customers extends React.Component {
 			    },
 			    body: JSON.stringify(data),
 		  	}).
-		  	then(() =>this.getCustomers());
+		  	then(() =>Client.getData());
 			}		
 		});
 	}
@@ -225,7 +226,7 @@ class Customers extends React.Component {
 			))
 	
 		return(
-			<div className="container">
+			<div>
 				<Grid>
 					<PageHeader>Customer List<Button onClick={this.showModalCreate}>Create</Button></PageHeader>
 					<Table responsive >
