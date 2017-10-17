@@ -11,7 +11,7 @@ class Customers extends React.Component {
 			showModalCreate: false,
 
 			customer: {
-				id: '',
+				// id: '',
 				phone: '',
 				name: '',
 				address: ''
@@ -52,7 +52,7 @@ class Customers extends React.Component {
 		this.setState({
 			showModalCreate: true,
 			customer: {
-				id: '',
+				// id: '',
 				name: '',
 				address: '',
 				phone: ''
@@ -160,17 +160,17 @@ class Customers extends React.Component {
 
 	//create customer from modal
 	createCustomer() {
-		let customerId = 1;
-		if (this.state.customers.length > 0) {
-			customerId = this.state.customers.reduce(function(prev, current) {
-    		return (prev.id > current.id) ? prev : current
-			}).id + 1;
-		}
+		// let customerId = 1;
+		// if (this.state.customers.length > 0) {
+		// 	customerId = this.state.customers.reduce(function(prev, current) {
+  //   		return (prev.id > current.id) ? prev : current
+		// 	}).id + 1;
+		// }
 		const customerName = this.state.customer.name,
 					customerAddress = this.state.customer.address,
 					customerPhone = this.state.customer.phone,
 					newCustomer = {
-						'id': customerId,
+						// 'id': customerId,
 						'name' : customerName,
 						'address': customerAddress,
 						'phone': customerPhone
