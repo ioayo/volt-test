@@ -1,2 +1,4 @@
 /node_modules/
 /.git/
+/invoices.sqlite/
+./invoices.sqlite/
