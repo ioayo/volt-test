@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, PageHeader, Button, Table, Modal, FormGroup, FormControl, ControlLabel} from 'react-bootstrap';
-import ModalForm from './Modals/ModalForm';
+import { ModalFormCustomers } from './Modals/ModalForm';
 import Client from './Helpers';
 
 class Customers extends React.Component {
@@ -267,7 +267,7 @@ class Customers extends React.Component {
 					</Table>
 				</Grid>
 
-				<ModalForm 
+				<ModalFormCustomers
 					title={'Create New Customer'}
 					modalType={'Create'}
 					showModal={this.state.showModalCreate} 
@@ -279,7 +279,7 @@ class Customers extends React.Component {
 					onClose={this.closeModalCreate}
 					/>
 				
-				<ModalForm
+				<ModalFormCustomers
 					title={'Edit Customer'}
 					modalType={'Edit'}
 					showModal={this.state.showModalEdit}
