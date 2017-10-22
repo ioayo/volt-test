@@ -225,8 +225,8 @@ class Customers extends React.Component {
 			      'Content-Type': 'application/json'
 			    },
 			    body: JSON.stringify(data),
-		  	}).
-		  	then(() =>Client.getData());
+		  	})
+		  	.then(() =>this.getCustomers());
 			}		
 		});
 	}

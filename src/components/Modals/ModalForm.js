@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { Button, Table, Modal, FormGroup, FormControl, ControlLabel} from 'react-bootstrap';
 
 export class ModalFormCustomers extends React.Component {
@@ -53,7 +52,6 @@ export class ModalFormCustomers extends React.Component {
 
 export class ModalFormProducts extends React.Component {
   render() {
-
     return (
       <Modal show={this.props.showModal} onHide={this.props.onClose}>
           <Modal.Header closeButton>
@@ -77,7 +75,7 @@ export class ModalFormProducts extends React.Component {
               name="price"
               value={this.props.product.price}
               onChange={this.props.handleInput}
-              placeholder="Enter name"
+              placeholder="Enter price"
             />
           </FormGroup >
           </Modal.Body>
