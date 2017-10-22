@@ -1,5 +1,5 @@
 # Volt Junior React Test Project
 
 ## Команды 
-```npm start``` - backend API
-```npm run dev``` - webpack-dev-server
+```npm start``` - run server
+```webpack``` - build 
