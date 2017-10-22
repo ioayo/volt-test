@@ -38,6 +38,7 @@ class Customers extends React.Component {
 
 	
 	componentDidMount() {
+		window.document.title = "Customers List";
 		this.getCustomers();
 	}
 

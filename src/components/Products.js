@@ -34,6 +34,7 @@ class Products extends React.Component {
 	}
 
 	componentDidMount() {
+		window.document.title = "Customers List";
 		this.getProducts();
 	}
 	
